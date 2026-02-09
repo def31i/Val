@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Valentine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Floating hearts + roses */
+.floating {
+    position: absolute;
+    font-size: 24px;
+    pointer-events: none;
+    animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(110vh) translateX(0deg) rotate(0deg);
+        opacity: 0.9;
+    }
+    50% {
+        transform: translateY(50vh) translateX(30px) rotate(10deg);
+    }
+    100% {
+        transform: translateY(-15vh) translateX(-40px) rotate(-10deg);
+        opacity: 0;
+    }
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 45px;
+    border-radius: 25px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    text-align: center;
+    max-width: 420px;
+    position: relative;
+    z-index: 2;
+}
+
+h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 40px;
+    color: #ff4d6d;
+}
+
+button {
+    padding: 12px 30px;
+    margin: 12px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.yes {
+    background: #ff4d6d;
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+.no {
+    background: #eee;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.07); }
+    100% { transform: scale(1); }
+}
+
+button:hover {
+    transform: scale(1.15);
+}
+
+/* Popup */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: white;
+    padding: 35px;
+    border-radius: 22px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    max-width: 360px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s;
+    z-index: 10;
+}
+
+.popup.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 32px;
+    color: #ff4d6d;
+}
+
+/* Photo frame */
+.photo-frame {
+    margin-top: 18px;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    transform: rotate(-2deg);
+    display: inline-block;
+}
+
+.photo-frame img {
+    max-width: 250px;
+    border-radius: 6px;
+}
+
+.closeBtn {
+    margin-top: 18px;
+    background: #ff4d6d;
+    color: white;
+}
+
+/* Sparkle */
+.sparkle {
+    position: absolute;
+    font-size: 18px;
+    animation: sparkleAnim 1s forwards;
+    pointer-events: none;
+}
+
+@keyframes sparkleAnim {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to { opacity: 0; transform: translateY(-80px) scale(1.5); }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Will You Be My Valentine? ❤️</h1>
+
+    <button class="yes" onclick="handleYes()">Yes</button>
+    <button class="no" onclick="handleNo()">No</button>
+
+    <div id="response"></div>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="letterPopup">
+
+    <h2>💌 For You</h2>
+
+    <p>
+        You bring a level of joy and clarity into my life I did not know was possible. 
+        Thank you for loving me and making me feel complete. You will always be my amazing sweet girl. I love you dearly 
+        -E ❤️
+    </p>
+
+    <div class="photo-frame">
+        <img src="/Users/elija/repos/Card/photo/ours.jpg">
+    </div>
+
+    <br>
+    <button class="closeBtn" onclick="closePopup()">Close</button>
+
+</div>
+
+<script>
+
+/* BUTTON HANDLERS */
+function handleYes() {
+    document.getElementById("response").textContent =
+        "You just made my heart ridiculously happy 💕";
+    showPopup();
+}
+
+function handleNo() {
+    document.getElementById("response").textContent =
+        "Hehe... I still wanted you to read this ❤️ (You dont have a choice muahahaha)";
+    showPopup();
+}
+
+function showPopup() {
+    document.getElementById("letterPopup").classList.add("active");
+    sparkleBurst();
+}
+
+function closePopup() {
+    document.getElementById("letterPopup").classList.remove("active");
+}
+
+/* Floating hearts + roses with drifting animation */
+function createFloatingItem() {
+
+    const item = document.createElement("div");
+    item.className = "floating";
+
+    const isRose = Math.random() > 0.5;
+    item.innerHTML = isRose ? "🌹" : "❤️";
+
+    // Random horizontal spawn
+    item.style.left = Math.random()*100 + "vw";
+
+    // Random size variation
+    item.style.fontSize = (Math.random() * 12 + 18) + "px";
+
+    // Roses float slower for depth
+    const duration = isRose
+        ? (Math.random() * 4 + 6)
+        : (Math.random() * 3 + 4);
+
+    item.style.animationDuration = duration + "s";
+
+    document.body.appendChild(item);
+
+    setTimeout(() => item.remove(), duration*1000);
+}
+
+setInterval(createFloatingItem, 350);
+
+/* Sparkle effect */
+function sparkleBurst() {
+    for (let i = 0; i < 18; i++) {
+
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.innerHTML = "✨";
+
+        sparkle.style.left =
+            (window.innerWidth/2 + Math.random()*120 - 60) + "px";
+
+        sparkle.style.top =
+            (window.innerHeight/2 + Math.random()*120 - 60) + "px";
+
+        document.body.appendChild(sparkle);
+
+        setTimeout(() => sparkle.remove(), 1000);
+    }
+}
+
+</script>
+
+</body>
+</html>
