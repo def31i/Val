@@ -157,7 +157,10 @@ button:hover {
 </head>
 
 <body>
-
+    
+<!-- Background music -->
+<audio id="bgMusic" src="valinstrument.mp3" loop></audio>
+    
 <div class="card">
     <h1>Will You Be My Valentine? ❤️</h1>
 
@@ -193,15 +196,22 @@ button:hover {
 function handleYes() {
     document.getElementById("response").textContent =
         "You just made my heart ridiculously happy 💕";
+    playmusic();
     showPopup();
 }
 
 function handleNo() {
     document.getElementById("response").textContent =
         "Hehe... I still wanted you to read this ❤️ (You dont have a choice muahahaha)";
+    playmusic();
     showPopup();
 }
-
+function playMusic() {
+    const music = document.getElementById("bgMusic");
+    music.play().catch(err => {
+        console.log("Audio play blocked:", err);
+    });
+}
 function showPopup() {
     document.getElementById("letterPopup").classList.add("active");
     sparkleBurst();
@@ -264,5 +274,6 @@ function sparkleBurst() {
 
 </body>
 </html>
+
 
 
